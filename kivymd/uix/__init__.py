@@ -1,86 +1,35 @@
-__all__ = ("MDAdaptiveWidget",)
+"""
+KivyMD
+======
 
-from kivy.properties import BooleanProperty
-from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.label import Label
-from kivy.uix.screenmanager import Screen
+KivyMD is a collection of Material Design compliant widgets for use with Kivy,
+a framework for cross-platform, touch-enabled graphical applications.
+The project's goal is to approximate Google's Material Design spec as close
+as possible without sacrificing ease of use or application performance.
 
-from kivymd.uix.behaviors import SpecificBackgroundColorBehavior
+Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
+    KivyMD library up to version 0.1.2
+Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
+    KivyMD library version 0.1.3 and higher
 
+For suggestions and questions:
+<kivydevelopment@gmail.com>
 
-class MDAdaptiveWidget(SpecificBackgroundColorBehavior):
-    adaptive_height = BooleanProperty(False)
-    """
-    If `True`, the following properties will be applied to the widget:
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+"""
 
-    .. code-block:: kv
+import os
+from kivy.logger import Logger
 
-        size_hint_y: None
-        height: self.minimum_height
+__version_info__ = (0, 103, 0)
+__version__ = "0.103.0"
 
-    :attr:`adaptive_height` is an :class:`~kivy.properties.BooleanProperty`
-    and defaults to `False`.
-    """
+path = os.path.dirname(__file__)
+fonts_path = os.path.join(path, f"fonts{os.sep}")
+images_path = os.path.join(path, f"images{os.sep}")
 
-    adaptive_width = BooleanProperty(False)
-    """
-    If `True`, the following properties will be applied to the widget:
+Logger.info(f"KivyMD: v{__version__}")
 
-    .. code-block:: kv
-
-        size_hint_x: None
-        width: self.minimum_width
-
-    :attr:`adaptive_width` is an :class:`~kivy.properties.BooleanProperty`
-    and defaults to `False`.
-    """
-
-    adaptive_size = BooleanProperty(False)
-    """
-    If `True`, the following properties will be applied to the widget:
-
-    .. code-block:: kv
-
-        size_hint: None, None
-        size: self.minimum_size
-
-    :attr:`adaptive_size` is an :class:`~kivy.properties.BooleanProperty`
-    and defaults to `False`.
-    """
-
-    def on_adaptive_height(self, instance, value):
-        self.size_hint_y = None
-        if issubclass(self.__class__, Label):
-            self.bind(
-                texture_size=lambda *x: self.setter("height")(
-                    self, self.texture_size[1]
-                )
-            )
-        else:
-            if not isinstance(self, (FloatLayout, Screen)):
-                self.bind(minimum_height=self.setter("height"))
-
-    def on_adaptive_width(self, instance, value):
-        self.size_hint_x = None
-        if issubclass(self.__class__, Label):
-            self.bind(
-                texture_size=lambda *x: self.setter("width")(
-                    self, self.texture_size[0]
-                )
-            )
-        else:
-            if not isinstance(self, (FloatLayout, Screen)):
-                self.bind(minimum_width=self.setter("width"))
-
-    def on_adaptive_size(self, instance, value):
-        self.size_hint = (None, None)
-        if issubclass(self.__class__, Label):
-            self.text_size = (None, None)
-            self.bind(
-                texture_size=lambda *x: self.setter("size")(
-                    self, self.texture_size
-                )
-            )
-        else:
-            if not isinstance(self, (FloatLayout, Screen)):
-                self.bind(minimum_size=self.setter("size"))
+import kivymd.factory_registers
+from kivymd.tools.packaging.pyinstaller import hooks_path

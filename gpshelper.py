@@ -39,7 +39,11 @@ class GpsHelper():
     def update_blinker_position(self, *args, **kwargs):
         my_lat = kwargs['lat']
         my_lon = kwargs['lon']
+        #beispiel
+        my_lat = 51.4468863
+        my_lon = 7.2595162
         print("GPS POSITION", my_lat, my_lon)
+        
         # Update GpsBlinker position
         gps_blinker = App.get_running_app().root.ids.mapview.ids.blinker
         gps_blinker.lat = my_lat
